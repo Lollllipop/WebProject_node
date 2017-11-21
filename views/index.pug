@@ -1,0 +1,68 @@
+extends layout
+   
+block content
+  section
+    #carouselExampleSlidesOnly.carousel.slide(data-ride="carousel")
+      .carousel-inner
+        .carousel-item.active
+          img.d-block.w-100(src="/images/carousel_images/carousel_image1.jpg", alt="First slide")
+        .carousel-item
+          img.d-block.w-100(src="/images/carousel_images/carousel_image2.jpg", alt="Second slide")
+        .carousel-item
+          img.d-block.w-100(src="/images/carousel_images/carousel_image3.jpg", alt="Third slide")
+  section
+    #search-layer
+      #search-layer-top
+        a.nav-link(href="/singin") 최고의 팀을 만들어보세요!
+      #search-layer-bottom
+        //- get events
+        form(action="/events/eventStep1")
+          .form-row
+            input.btn.btn-primary(type="submit" value="검색")
+            .form-row-1
+              input.form-control(type="text", placeholder="팀 검색")
+    .title 가장 최신 팀
+    .grid-content
+      .card
+        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
+        a.card-img-link(href="/events/@")
+        .card-body
+          p.card-body-date 얼마 전에 등록됨
+          p.card-body-text 제목
+          p.card-body-location 위치
+        #card-footer.card-body
+          a.card-link(href="#") #tag1
+          a.card-link(href="#") #tag2
+      .card
+        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
+        a.card-img-link(href="/events/@")
+        .card-body
+          p.card-body-date 얼마 전에 등록됨
+          p.card-body-text 제목
+          p.card-body-location 위치
+        #card-footer.card-body
+          a.card-link(href="#") #tag1
+          a.card-link(href="#") #tag2
+      .card
+        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
+        a.card-img-link(href="/events/@")
+        .card-body
+          p.card-body-date 얼마 전에 등록됨
+          p.card-body-text 제목
+          p.card-body-location 위치
+        #card-footer.card-body
+          a.card-link(href="#") #tag1
+          a.card-link(href="#") #tag2
+      .card
+        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
+        a.card-img-link(href="/events/@")
+        .card-body
+          p.card-body-date 얼마 전에 등록됨
+          p.card-body-text 제목
+          p.card-body-location 위치
+        #card-footer.card-body
+          a.card-link(href="#") #tag1
+          a.card-link(href="#") #tag2
+    .grid-seeMore
+      a.btn.btn-primary(href="#" role="button" aria-pressed="true") SEE MORE
+
