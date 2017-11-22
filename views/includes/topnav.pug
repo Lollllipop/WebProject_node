@@ -11,17 +11,14 @@ header
             li.nav-item
               a.nav-link(href='/users/new') 새 계정 만들기
           else
-            <div class="btn-group">
-              <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Action
-              </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">프로필 보기</a>
-                <a class="dropdown-item" href="#">프로필 관리</a>
-                <a class="dropdown-item" href="#">내가 쓴 게시물</a>
-                <a class="dropdown-item" href="#">내가 지원한 스터디</a>
-                <a class="dropdown-item" href="/signout">로그아웃</a>
-              </div>
-            </div>
-        
-          
+            li.nav-item
+              a.nav-link(href='/signin') 프로필 보기
+            li.nav-item
+              a.nav-link(href='/users/new') 프로필 관리
+            li.nav-item
+              a.nav-link(href='/signin') 내가 쓴 게시물
+            li.nav-item
+              a.nav-link(href='/users/new') 내가 지원한 스터디
+            li.nav-item
+              a.nav-link(href='/signin') 로그아웃
+

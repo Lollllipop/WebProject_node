@@ -2,20 +2,19 @@ extends ../layout
 
 block content
   .container
-    h1.main-title Register
+    h1.main-title 새 계정 만들기
     form(action='/users', method='POST')
       .form-group
-        label(for='name') Name
-        input.form-control(type='text', id='name', name='name', placeholder='Your name')
+        label(for='name') 이름
+        input.form-control(type='text', id='name', name='name', placeholder='이름을 입력해주세요')
       .form-group
-        label(for='email') Email address
-        input.form-control(type='email', id='email', name='email', placeholder='Email')
+        label(for='email') 이메일 주소
+        input.form-control(type='email', id='email', name='email', placeholder='이메일 주소를 입력해주세요')
       .form-group
-        label(for='password') Password
-        input.form-control(type='password', id='password', name='password', placeholder='Password')
+        label(for='password') 비밀번호
+        input.form-control(type='password', id='password', name='password', placeholder='비밀번호를 입력해주세요')
       .form-group
-        label(for='password_confirmation') Password Confirmation
-        input.form-control(type='password', id='password_confirmation', name='password_confirmation', placeholder='Password')
-      a.btn.btn-outline-secondary(href='/users') List
+        label(for='password_confirmation') 비밀번호 확인
+        input.form-control(type='password', id='password_confirmation', name='password_confirmation', placeholder='비밀번호를 다시 입력해주세요')
       | 
       button.btn.btn-primary(type='submit') Register 

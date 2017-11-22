@@ -4,32 +4,32 @@ block content
   .container
     .clearfix
       form.form-signin(action='/signin', method='POST')
-        h3.form-signin-heading Signin
+        h3.form-signin-heading 로그인 
         label.sr-only(for='email') Email address
         input(
           type='email', id='email', name='email', class='form-control', 
-          placeholder='Email address', required, autofocus
+          placeholder='이메일 입력', required, autofocus
         )
         label.sr-only(for='password') Password
         input(
           type='password', id='password', name='password', class='form-control', 
-          placeholder='Password', required, autofocus
+          placeholder='비밀번호 입력', required, autofocus
         )
         .checkbox
           label 
             input(type="checkbox", value="remember-me")
             |
-            | Remember me
-        button.btn.btn-primary.btn-block(type='submit') Signin
+            | 자동 로그인
+        button.btn.btn-primary.btn-block(type='submit') 로그인
         a.btn.btn-dark.btn-block(href='/auth/facebook')
           i.fa.fa-facebook.fa-lg
           | &nbsp;
-          | Signin with Facebook
+          | 페이스북으로 시작하기
 
         div.sub 
-          a(href='/users/new') Signup
+          a(href='/users/new') 새 계정 만들기
           | 
           | /
           |
-          a(href='/reset-password') Reset Password
+          a(href='/reset-password') 비밀번호 찾기
       
