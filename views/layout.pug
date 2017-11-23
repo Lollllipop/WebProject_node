@@ -18,7 +18,7 @@ html
       include ./includes/topnav
     if flashMessages
       each texts, type in flashMessages
-        .container
+        .container#flash-message
           .alert.alert-dismissible.fade.show(class=`alert-${type}`)
             each msg in texts
               | #{msg} 

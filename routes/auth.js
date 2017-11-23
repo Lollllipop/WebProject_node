@@ -11,12 +11,14 @@ module.exports = (app, passport) => {
  * 위의 파라미터를 통해 받은 인자로 해당 strategy 객체를 실제로 생성후 객체 생성시 발생하는 콜백함수에 의해
  * 해당 strategy의 인증이 수행되는 것이다.
  */
-
+ 
   app.post('/signin', passport.authenticate('local',{
     successRedirect : '/', // redirect to the secure profile section
     failureRedirect : '/signin', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
   }));
+
+
 
   /**
    * Facebook 
@@ -35,14 +37,38 @@ module.exports = (app, passport) => {
    * 해당 유저의 accessToken과 함께 이쪽으로 이동시킴
    */
   app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-      successRedirect: '/',
       failureRedirect : '/signin',
       failureFlash : true // allow flash messages
-  }));
+    }), (req, res, next) => {
+      req.flash('success', '환영합니다!');
+      res.redirect('/');
+    }
+  );
+
+
+
+  /**
+   * Kakao
+   * Thrid-party certification
+   */
+  app.get('/auth/kakao',
+    passport.authenticate('kakao') 
+  );
+
+  app.get('/auth/kakao/callback', passport.authenticate('kakao', {
+      failureRedirect : '/signin',
+      failureFlash : true 
+    }), (req, res, next) => {
+      req.flash('success', '환영합니다!');
+      res.redirect('/');
+    }
+  );
+
+
 
   app.get('/signout', (req, res) => {
-    req.logout();
-    req.flash('success', 'Successfully signed out');
+    req.logout(); // passport에 의해 생긴 함수
+    req.flash('success', '로그아웃 되었습니다.');
     res.redirect('/');
   });
 };

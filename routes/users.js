@@ -99,7 +99,7 @@ router.post('/', catchErrors(async (req, res, next) => {
   var user = await User.findOne({email: req.body.email});
   console.log('USER???', user); // null이 나와야 겹치는 정상
   if (user) {
-    req.flash('danger', 'Email address already exists.');
+    req.flash('danger', '이미 존재하는 이메일 주소입니다.');
     return res.redirect('back'); // 다시 users/new로 가라!
   }
 
@@ -111,7 +111,7 @@ router.post('/', catchErrors(async (req, res, next) => {
   });
   user.password = await user.generateHash(req.body.password); // 비밀번호는 암호화해서 DB에 입력
   await user.save(); // DB에 저장!
-  req.flash('success', 'Registered successfully. Please sign in.');
+  req.flash('success', '계정이 생성되었습니다. 로그인 해주세요!');
   res.redirect('/signin');
 }));
 
