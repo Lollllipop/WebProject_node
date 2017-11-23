@@ -14,6 +14,7 @@ var cookieParser = require('cookie-parser'); // 쿠키 파싱
 var bodyParser = require('body-parser'); // html 바디 파싱
 var sassMiddleware = require('node-sass-middleware');
 var session = require('express-session'); // express는 세션기능을 내장하고 있지 않아 모듈을 달아줘야 함
+//var mongoStore = require('connect-mongo')(session);
 var methodOverride = require('method-override');
 var flash = require('connect-flash');
 var mongoose   = require('mongoose'); // DB
@@ -63,9 +64,9 @@ app.locals.querystring = require('querystring');
  * 외부 저장공간 mlab 사용 (public 하게 만들어야 되기 때문) 
  */
 
-const CONN_URI = 'mongodb://dahan:cdh950113@ds257485.mlab.com:57485/cotoodb';
+const MONGODB_CONN_URI = 'mongodb://dahan:cdh950113@ds257485.mlab.com:57485/cotoodb';
 mongoose.Promise = global.Promise; // ES6 Native Promise를 mongoose에서 사용한다.
-mongoose.connect(CONN_URI, {useMongoClient: true });
+mongoose.connect(MONGODB_CONN_URI, {useMongoClient: true });
 mongoose.connection.on('error', console.error); // error handler
 
 /**
@@ -101,7 +102,8 @@ app.use(sassMiddleware({
 app.use(session({
   resave: true, 
   saveUninitialized: true, // 세션아이디를 클라이언트가 사용하기 전까진 발급하지 말라는 뜻
-  secret: 'long-long-long-secret-string-1313513tefgwdsvbjkvasd' // 암호화 키랑 비슷한 역할
+  secret: 'long-long-long-secret-string-1313513tefgwdsvbjkvasd', // 암호화 키랑 비슷한 역할
+  //store: new mongoStore({url:MONGODB_CONN_URI}) // 디스크에 위치한 DB에 세션 정보를 저장하니까 엄청 느려지네 ;;
 }));
 app.use(flash()); // flash message를 사용할 수 있도록
 
