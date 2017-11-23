@@ -95,6 +95,7 @@ app.use(sassMiddleware({
  * 다음의 코드가 실행되면서 기본적으로 접속한 어떤 클라이언트이든 
  * sessID(=connect.sid)를 바로 제공하는 듯
  * 즉, 처음 접속시에 바로 sessID를 클라이언트가 받음
+ * 세션 데이터와 DB의 사용자 데이터는 별개
  */
 
 app.use(session({
@@ -118,11 +119,12 @@ app.use(express.static(path.join(__dirname, 'public'))); // 정적파일 라우�
  * passport가 다루는 html 태그의 name은 정해져 있으므로 passport가 사용하는 name으로
  * 적합하게 form 등을 짜줘야 한다.
  * name은 passport 홈페이지 참고
+ * 실행 흐름 => 라우트 -> passport.authentication() -> newStrategy -> passport.serializeUser()
  */
 
 app.use(passport.initialize()); // passport 초기화 후 app과 연결
 app.use(passport.session()); // passport와 세션 연결 (passport가 세션을 사용하겠다라는 뜻)
-passportConfig(passport);
+passportConfig(passport); // 여기서 접속한 클라이언트의 세션을 받아서 전역 req 변수의 객체로 해당 user 정보를 연결함
 
 app.use(function(req, res, next) { // pug의 local에 현재 사용자 정보와 flash 메시지를 전달
   res.locals.currentUser = req.user;  // passport는 req.user로 user정보 전달
@@ -163,7 +165,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-/*
+/**
  * app변수는 웹서버 객체를 참조한다.
  * module.exports도 웹서버 객체를 참조하도록 만듬
  */ 

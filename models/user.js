@@ -27,6 +27,10 @@ var schema = new Schema({
   toObject: {virtuals: true}
 });
 
+/*
+ * 암호화 및 암호화된 비밀번호 확인 함수
+ */
+
 schema.methods.generateHash = function(password) {
   return bcrypt.hash(password, 10); // return Promise
 };
