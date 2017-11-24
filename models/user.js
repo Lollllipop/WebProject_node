@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
@@ -20,6 +21,7 @@ var schema = new Schema({
   name: {type: String, required: true, trim: true},
   email: {type: String, required: true, index: true, unique: true, trim: true},
   password: {type: String},
+  isManager: {type: Boolean},
   facebook: {id: String, token: String, photo: String},
   kakao: {id: String, token: String, photo: String},
   createdAt: {type: Date, default: Date.now}
@@ -40,6 +42,7 @@ schema.methods.validatePassword = function(password) {
   return bcrypt.compare(password, this.password); // return Promise
 };
 
+schema.plugin(mongoosePaginate);
 var User = mongoose.model('User', schema);
 
 module.exports = User;

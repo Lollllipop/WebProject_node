@@ -1,0 +1,32 @@
+extends layout
+
+include ./includes/_paginate
+
+block content
+  section#section-nav
+    .users-manage 사용자 관리
+    //- .events-manage 이벤트 관리
+  section#section-list
+    .list-box
+      table.table.table-hover
+        thead
+          tr
+            th Name
+            th Email
+            th Created At
+            th
+        tbody
+          each user in users.docs
+            tr
+              td
+                a(href=`/users/${user._id}`)= user.name
+              td= user.email
+              td= moment(user.createdAt).format('YYYY-MM-DD HH:mm:ss')
+              td
+                a.btn.btn-sm.btn-outline-secondary(href=`/users/${user._id}/edit`) 
+                  | #[i.fa.fa-pencil] Edit
+                | 
+                a.btn.btn-sm.need-confirm-btn.btn-outline-danger(href=`/users/${user._id}?_method=DELETE`)
+                  | #[i.fa.fa-trash] Delete
+    .pagination-container
+      +paginate(users, '/manager', query)

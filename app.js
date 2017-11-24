@@ -96,7 +96,7 @@ app.use(sassMiddleware({
  * 다음의 코드가 실행되면서 기본적으로 접속한 어떤 클라이언트이든 
  * sessID(=connect.sid)를 바로 제공하는 듯
  * 즉, 처음 접속시에 바로 sessID를 클라이언트가 받음
- * 세션 데이터와 DB의 사용자 데이터는 별개
+ * 세션 데이터와 DB의 사용자 데이터는 별개 a
  */
 
 app.use(session({

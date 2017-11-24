@@ -4,10 +4,12 @@ const router = express.Router();
 const catchErrors = require('../lib/async-error');
 
 function needAuth(req, res, next) {
-  if (req.isAuthenticated()) {
-    next();
+  console.log("req.user : ",req.user); // 제대로 user가 장착이 된건지 check
+  console.log("req.isAuthenticated : ",req.isAuthenticated()); // 제대로 user가 장착이 된건지 check
+  if (req.isAuthenticated()) { // 지금 현재 사용자가 회원인 상태에서 시스템에 접근하는건지 확인
+    next(); //맞으면 다음 미들웨어로 req를 넘긴다.
   } else {
-    req.flash('danger', 'Please signin first.');
+    req.flash('danger', '로그인 먼저 해주시기 바랍니다.');
     res.redirect('/signin');
   }
 }
@@ -17,17 +19,26 @@ function needAuth(req, res, next) {
  */
 
 function validateForm(form, options) {
+  // async error handling 필요
   var name = form.name || "";
   var email = form.email || "";
   name = name.trim();
   email = email.trim();
 
+  console.log("!!req!! :",options.req);
+  console.log("!!req!! :",options.user);
   if (!name) {
     return 'Name is required.';
   }
 
   if (!email) {
     return 'Email is required.';
+  }
+  if (options.updateUser && !options.checkCurrenUser) {
+    if (!form.current_password) {
+      return 'Current password is required.';
+    }
+    return 'Current password is wrong';
   }
 
   if (!form.password && options.needPassword) {
@@ -51,13 +62,8 @@ function validateForm(form, options) {
 
 
 /*
- * GET route
+ * GET route (read)
  */
-
-router.get('/', needAuth, catchErrors(async (req, res, next) => {
-  const users = await User.find({});
-  res.render('users/index', {users: users});
-}));
 
 router.get('/new', (req, res, next) => {
   res.render('users/new', {messages: req.flash()});
@@ -81,7 +87,7 @@ router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
  */
 
 /*
- * POST route
+ * POST route (create)
  */
 
 router.post('/', catchErrors(async (req, res, next) => {
@@ -116,24 +122,26 @@ router.post('/', catchErrors(async (req, res, next) => {
 }));
 
 /*
- * PUT route
+ * PUT route (update)
  */
 
-router.put('/:id', needAuth, catchErrors(async (req, res, next) => {
-  const err = validateForm(req.body);
-  if (err) {
-    req.flash('danger', err);
-    return res.redirect('back');
-  }
+router.put('/:id', needAuth, catchErrors(async (req, res, next) => { // 수정 버튼 클릭시 동작
 
-  const user = await User.findById({_id: req.params.id});
+  const user = await User.findById({_id: req.params.id}); // 현재 사용자 식별 및 DB에서 데이터 추출
   if (!user) {
     req.flash('danger', 'Not exist user.');
     return res.redirect('back');
   }
 
+  var checkCurrenUser=true; 
   if (!await user.validatePassword(req.body.current_password)) {
-    req.flash('danger', 'Current password invalid.');
+    checkCurrenUser=false;
+  }
+
+  const err = validateForm(req.body ,{needPassword: true, updateUser: true, checkCurrenUser: checkCurrenUser});
+  if (err) { // 수정시에도 정보 적는 양식은 지켜줘야 하므로 check
+    console.log("!!err!! : ", err);
+    req.flash('danger', err);
     return res.redirect('back');
   }
 
@@ -148,13 +156,18 @@ router.put('/:id', needAuth, catchErrors(async (req, res, next) => {
 }));
 
 /*
- * DELETE route
+ * DELETE route (delete)
  */
 
-router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
-  const user = await User.findOneAndRemove({_id: req.params.id});
-  req.flash('success', 'Deleted Successfully.');
-  res.redirect('/users');
+router.delete('/:id', needAuth, catchErrors(async (req, res, next) => { // 여기에 needAuth와 async 미들웨어가 있는 것임
+  const user = await User.findOneAndRemove({_id: req.params.id}); // 그냥 해당 document를 다 날려버림 => 나중에 문제 될수도.. 올린 글 관련하여
+  if(req.user.isManager){
+    req.flash('success', '회원 탈퇴 처리가 정상적으로 처리되었습니다.');
+    res.redirect('/'); 
+  }else{
+    req.flash('success', '탈퇴가 정상적으로 처리되었습니다.');
+    res.redirect('/'); // 관리자 페이지에서 삭제시에도 적절한 라우트 필요
+  }
 }));
 
 

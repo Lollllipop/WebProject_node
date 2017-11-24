@@ -5,16 +5,21 @@ header
       span.navbar-toggler-icon
     #navbarNavDropdown.collapse.navbar-collapse.justify-content-end
       ul.navbar-nav
-          if (!currentUser) 
+          if (!currentUser)
             li.nav-item
               a.nav-link(href='/signin') 로그인
             li.nav-item
               a.nav-link(href='/users/new') 새 계정 만들기
+          else if (currentUser.isManager) 
+            li.nav-item
+              a.nav-link(href='/manager') 관리자 페이지로 이동
+            li.nav-item
+              a.nav-link(href='/signout') 로그아웃
           else
             li.nav-item
-              a.nav-link(href='/signin') 프로필 보기
+              a.nav-link(href=`/users/${currentUser._id}`) 프로필 보기
             li.nav-item
-              a.nav-link(href='/users/new') 프로필 관리
+              a.nav-link(href=`/users/${currentUser._id}/edit`) 프로필 관리
             li.nav-item
               a.nav-link(href='/signin') 내가 쓴 게시물
             li.nav-item

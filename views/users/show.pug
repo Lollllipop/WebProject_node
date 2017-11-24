@@ -1,11 +1,11 @@
 extends ../layout
 
 block content
-  .container
+  .container#show-container
     h1.main-title= user.name
           
     dl.row
-      dt.col-sm-3 Email
+      dt.col-sm-3 이메일
       dd.col-sm-9
         a(href=`mailto:${user.email}`)= user.email
 
@@ -18,9 +18,7 @@ block content
           img.img-fluid.rounded-circle(src= user.facebook.photo)
 
     hr
-    p
-      a.btn.btn-outline-secondary(href='/users/') List
+    p#users-data
+      a.btn.btn-outline-primary(href=`/users/${user._id}/edit`) 수정
       | 
-      a.btn.btn-outline-primary(href=`/users/${user._id}/edit`) Edit
-      | 
-      a.btn.btn-outline-danger.need-confirm-btn(href=`/users/${user._id}?_method=DELETE`) Delete
+      a.btn.btn-outline-danger.need-confirm-btn(href=`/users/${user._id}?_method=DELETE`) 회원 탈퇴
