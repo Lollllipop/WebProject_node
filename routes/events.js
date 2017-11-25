@@ -1,5 +1,5 @@
 const express = require('express');
-const Question = require('../models/question');
+//const Event = require('../models/event');
 const Answer = require('../models/answer'); 
 const catchErrors = require('../lib/async-error');
 
@@ -15,7 +15,7 @@ function needAuth(req, res, next) {
   }
 }
 
-/* GET questions listing. */
+/* GET Events listing. */
 router.get('/', catchErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
@@ -28,87 +28,87 @@ router.get('/', catchErrors(async (req, res, next) => {
       {content: {'$regex': term, '$options': 'i'}}
     ]};
   }
-  const questions = await Question.paginate(query, {
+  const events = await Event.paginate(query, {
     sort: {createdAt: -1}, 
     populate: 'author', 
     page: page, limit: limit
   });
-  res.render('questions/index', {questions: questions, term: term, query: req.query});
+  res.render('events/index', {events: events, term: term, query: req.query});
 }));
 
 router.get('/new', needAuth, (req, res, next) => {
-  res.render('questions/new', {question: {}});
+  res.render('events/new', {event: {}});
 });
 
 router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
-  const question = await Question.findById(req.params.id);
-  res.render('questions/edit', {question: question});
+  const event = await Event.findById(req.params.id);
+  res.render('events/edit', {event: event});
 }));
 
 router.get('/:id', catchErrors(async (req, res, next) => {
-  const question = await Question.findById(req.params.id).populate('author');
-  const answers = await Answer.find({question: question.id}).populate('author');
-  question.numReads++;    // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록???
+  const event = await Event.findById(req.params.id).populate('author');
+  const answers = await Answer.find({event: event.id}).populate('author');
+  event.numReads++;    // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록???
 
-  await question.save();
-  res.render('questions/show', {question: question, answers: answers});
+  await event.save();
+  res.render('events/show', {event: event, answers: answers});
 }));
 
 router.put('/:id', catchErrors(async (req, res, next) => {
-  const question = await Question.findById(req.params.id);
+  const event = await Event.findById(req.params.id);
 
-  if (!question) {
-    req.flash('danger', 'Not exist question');
+  if (!event) {
+    req.flash('danger', 'Not exist event');
     return res.redirect('back');
   }
-  question.title = req.body.title;
-  question.content = req.body.content;
-  question.tags = req.body.tags.split(" ").map(e => e.trim());
+  event.title = req.body.title;
+  event.content = req.body.content;
+  event.tags = req.body.tags.split(" ").map(e => e.trim());
 
-  await question.save();
+  await event.save();
   req.flash('success', 'Successfully updated');
-  res.redirect('/questions');
+  res.redirect('/events');
 }));
 
 router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
-  await Question.findOneAndRemove({_id: req.params.id});
+  await Event.findOneAndRemove({_id: req.params.id});
   req.flash('success', 'Successfully deleted');
-  res.redirect('/questions');
+  res.redirect('/events');
 }));
 
 router.post('/', needAuth, catchErrors(async (req, res, next) => {
   const user = req.user;
-  var question = new Question({
+  var event = new Event({
     title: req.body.title,
     author: user._id,
     content: req.body.content,
     tags: req.body.tags.split(" ").map(e => e.trim()),
   });
-  await question.save();
+  await event.save();
   req.flash('success', 'Successfully posted');
-  res.redirect('/questions');
+  res.redirect('/events');
 }));
 
 router.post('/:id/answers', needAuth, catchErrors(async (req, res, next) => {
   const user = req.user;
-  const question = await Question.findById(req.params.id);
+  const event = await Event.findById(req.params.id);
 
-  if (!question) {
-    req.flash('danger', 'Not exist question');
+  if (!event) {
+    req.flash('danger', 'Not exist event');
     return res.redirect('back');
   }
 
   var answer = new Answer({
     author: user._id,
-    question: question._id,
+    event: event._id,
     content: req.body.content
   });
   await answer.save();
-  question.numAnswers++;
-  await question.save();
+  event.numAnswers++;
+  await event.save();
 
   req.flash('success', 'Successfully answered');
-  res.redirect(`/questions/${req.params.id}`);
+  res.redirect(`/events/${req.params.id}`);
 }));
 
 

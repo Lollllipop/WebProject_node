@@ -1,4 +1,5 @@
 module.exports = (app, passport) => {
+  
   app.get('/signin', (req, res, next) => {
     res.render('signin');
   });

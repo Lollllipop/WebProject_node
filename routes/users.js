@@ -25,8 +25,6 @@ function validateForm(form, options) {
   name = name.trim();
   email = email.trim();
 
-  console.log("!!req!! :",options.req);
-  console.log("!!req!! :",options.user);
   if (!name) {
     return 'Name is required.';
   }
@@ -150,9 +148,15 @@ router.put('/:id', needAuth, catchErrors(async (req, res, next) => { // 수정 �
   if (req.body.password) {
     user.password = await user.generateHash(req.body.password);
   }
+  console.log();
   await user.save();
-  req.flash('success', 'Updated successfully.');
-  res.redirect('/users');
+  if(req.user.isManager){
+    req.flash('success', '회원 수정 처리가 정상적으로 처리되었습니다.');
+    res.redirect('/manager'); 
+  }else{
+    req.flash('success', '수정이 정상적으로 완료되었습니다.');
+    res.redirect(`/users/${user._id}`); // 관리자 페이지에서 삭제시에도 적절한 라우트 필요
+  }
 }));
 
 /*
@@ -160,12 +164,18 @@ router.put('/:id', needAuth, catchErrors(async (req, res, next) => { // 수정 �
  */
 
 router.delete('/:id', needAuth, catchErrors(async (req, res, next) => { // 여기에 needAuth와 async 미들웨어가 있는 것임
-  const user = await User.findOneAndRemove({_id: req.params.id}); // 그냥 해당 document를 다 날려버림 => 나중에 문제 될수도.. 올린 글 관련하여
+  const user = await User.findById({_id: req.params.id}); // 그냥 해당 document를 다 날려버림 => 나중에 문제 될수도.. 올린 글 관련하여
+  user.email = `__Deleted-${user._id}@no-email.com`; // 이메일 property가 필수라 delete 더미 값으로 설정
+  user.password = undefined;
+  user.facebook = undefined; // 주의 불확실함
+  user.kakao = undefined; // 주의 불확실함
+  await user.save();
   if(req.user.isManager){
     req.flash('success', '회원 탈퇴 처리가 정상적으로 처리되었습니다.');
-    res.redirect('/'); 
+    res.redirect('/manager'); 
   }else{
     req.flash('success', '탈퇴가 정상적으로 처리되었습니다.');
+    req.logout(); // 세션 연결 끊기 위해서
     res.redirect('/'); // 관리자 페이지에서 삭제시에도 적절한 라우트 필요
   }
 }));

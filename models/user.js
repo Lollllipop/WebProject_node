@@ -19,11 +19,11 @@ const Schema = mongoose.Schema;
 
 var schema = new Schema({
   name: {type: String, required: true, trim: true},
-  email: {type: String, required: true, index: true, unique: true, trim: true},
-  password: {type: String},
+  email: {type: String, required: true, index: true, unique: true, trim: true}, // 회원탈퇴시 삭제
+  password: {type: String}, // 회원탈퇴시 삭제
   isManager: {type: Boolean},
-  facebook: {id: String, token: String, photo: String},
-  kakao: {id: String, token: String, photo: String},
+  facebook: {id: String, token: String, photo: String}, // 회원탈퇴시 삭제 (이 정보는 만약 API와 연결이 된다면 문제 발생할 가능성 있음)
+  kakao: {id: String, token: String, photo: String}, // 회원탈퇴시 삭제 (이 정보는 만약 API와 연결이 된다면 문제 발생할 가능성 있음)
   createdAt: {type: Date, default: Date.now}
 }, {
   toJSON: { virtuals: true},

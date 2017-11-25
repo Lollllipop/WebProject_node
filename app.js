@@ -23,7 +23,7 @@ var passportConfig = require('./lib/passport-config');
 
 var index = require('./routes/index'); // 메인 홈페이지의 기본적인 링크들
 var users = require('./routes/users'); // 유저와 관련된 링크들
-var questions = require('./routes/questions');
+var events = require('./routes/events');
 
 
 
@@ -140,7 +140,7 @@ app.use(function(req, res, next) { // pug의 local에 현재 사용자 정보와
 
 app.use('/', index); // localhost:3000 하면 여기서 종료됨 즉, 이게 base임
 app.use('/users', users);
-app.use('/questions', questions);
+app.use('/events', events);
 require('./routes/auth')(app, passport);
 
 
