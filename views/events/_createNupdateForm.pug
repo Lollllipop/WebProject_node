@@ -1,0 +1,63 @@
+.form-group
+  label(for="title") 제목
+  input.form-control(type="text", name="title", required)
+.form-group
+  label(for="content") 세부 내용
+  textarea.form-control(name="content", rows="5", required)
+.form-group
+  label(for="location") 장소
+  input.form-control(type="text", name="location", required)
+  //- 여기 다음 맵 들어가야 함
+.form-group
+  .form-group-2
+    label(for="startDate") 시작 날짜
+    input.form-control(type="date", name="startDate", required)
+  .form-group-2
+    label(for="endDate") 종료 날짜
+    input.form-control(type="date", name="endDate", required)
+.form-group 
+  .form-group-2
+    label(for="startTime") 시작 시간
+    input.form-control(type="time", name="startTime", required)
+  .form-group-2    
+    label(for="endTime") 종료 시간
+    input.form-control(type="time", name="endTime", required)
+.form-group
+  label(for="orgName") 조직 이름
+  input.form-control(type="text", name="orgName", required)
+.form-group
+  label(for="orgDescription") 조직 설명
+  textarea.form-control(name="orgDescription", rows="3", required)
+.form-group
+  .form-group-2#form-group-kinds
+    label(for="kinds") 종류
+    select(name='kinds', size='3', required)
+      option(value='coun') 국가
+      option(value='pub_en') 공기업
+      option(value='big_en') 대기업
+      option(value='mid_en') 중견기업
+      option(value='sml_en') 중소기업
+      option(value='indi') 개인
+  .form-group-2#form-group-kinds
+    label(for="fields") 분야
+    select(name='fields', size='3', multiple, required)
+      option(value='bigdata') 빅데이터 
+      option(value='security') 보안
+      option(value='ai') 인공지능
+      option(value='robot') 로봇
+      option(value='car') 자동차
+      option(value='game') 게임
+      option(value='bio') 바이오테크
+      option(value='itSolution') IT 솔루션
+      option(value='itService') IT 서비스
+.form-group
+  label(for="isFree") 유료
+  input.form-control#isFree(type="checkbox", name="isFree", value="false") 
+  input.form-control#charge(type="number", name="charge" placeholder="가격을 입력하세요")
+
+
+
+
+
+
+

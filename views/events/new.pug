@@ -2,9 +2,9 @@ extends ../layout
 
 block content
   .container
-    h1.main-title New Question
-    form(action="/questions", method="POST")
-      include _form
-      button.btn.btn-outline-primary(type="submit") Post Your Question
+    h1.main-title 이벤트 생성
+    form(action="/events", method="POST")
+      include _createNupdateForm
+      button.btn.btn-outline-primary(type="submit") 확인
 
     

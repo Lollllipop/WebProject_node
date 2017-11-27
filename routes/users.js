@@ -2,60 +2,8 @@ const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
 const catchErrors = require('../lib/async-error');
-
-function needAuth(req, res, next) {
-  console.log("req.user : ",req.user); // 제대로 user가 장착이 된건지 check
-  console.log("req.isAuthenticated : ",req.isAuthenticated()); // 제대로 user가 장착이 된건지 check
-  if (req.isAuthenticated()) { // 지금 현재 사용자가 회원인 상태에서 시스템에 접근하는건지 확인
-    next(); //맞으면 다음 미들웨어로 req를 넘긴다.
-  } else {
-    req.flash('danger', '로그인 먼저 해주시기 바랍니다.');
-    res.redirect('/signin');
-  }
-}
-
-/**
- * Form 잘 작성했는지 검사하는 함수
- */
-
-function validateForm(form, options) {
-  // async error handling 필요
-  var name = form.name || "";
-  var email = form.email || "";
-  name = name.trim();
-  email = email.trim();
-
-  if (!name) {
-    return 'Name is required.';
-  }
-
-  if (!email) {
-    return 'Email is required.';
-  }
-  if (options.updateUser && !options.checkCurrenUser) {
-    if (!form.current_password) {
-      return 'Current password is required.';
-    }
-    return 'Current password is wrong';
-  }
-
-  if (!form.password && options.needPassword) {
-    return 'Password is required.';
-  }
-
-  if (form.password !== form.password_confirmation) {
-    return 'Passsword do not match.';
-  }
-
-  if (form.password.length < 6) {
-    return 'Password must be at least 6 characters.';
-  }
-
-  return null;
-}
-
-
-
+const validateForm = require('../lib/validateForm-user');
+const needAuth = require('../lib/auth-check');
 
 
 

@@ -21,6 +21,15 @@ footer{
 
 
 
+/*********************** google map *********************/
+#map{
+  height: 300px;
+  width: 100%;
+}
+
+
+
+
 /*********** content > section2 > serach-layer **********/
 #search-layer-top {
   text-align: center;
@@ -244,6 +253,47 @@ body>#flash-message{
 }
 
 
+/*********************** events/new *************************/
+.form-group-2{
+  width: 49%;
+  display: inline-block;
+}
+.form-group-2>select{
+  display: block;
+  margin: auto;
+}
+#form-group-kinds{
+  text-align: center;  
+}
+#isFree{
+  width: fit-content;
+  display: inline-block;
+}
+#charge{
+  display: inline-block;
+  width: 85%;
+}
+
+
+/************************* events ***************************/
+#total_set{
+  text-align: right;
+}
+#charge-container{
+  width: 100%;
+  height: 55px;
+  border-top: 1px solid #D2D6DF;
+  border-bottom: 1px solid #D2D6DF; 
+  margin-top: 10px;
+}
+#charge-box{
+
+}
+#apply-box{
+  
+}
+
+
 
 
 @media screen and (min-width : 768px) {
@@ -327,6 +377,12 @@ body>#flash-message{
   #users-data .btn{
     width:48%!important;
     display: inline-block!important;
+  }
+  #events-container{
+    max-width: 600px!important;
+  }
+  #event-container{
+    max-width: 800px!important;
   }
 }
 
