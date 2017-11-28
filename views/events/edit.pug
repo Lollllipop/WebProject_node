@@ -2,8 +2,7 @@ extends ../layout
 
 block content
   .container
-    h1.main-title Edit Question
-    form(action=`/questions/${question.id}`, method="POST")
-      input(type="hidden", name="_method", value="PUT")
-      include _form
-      button.btn.btn-outline-primary(type="submit") Update Your Question
+    h1.main-title 이벤트 수정
+    form(action=`/events/${event.id}?_method=PUT`, method="POST")
+      include _updateForm
+      button.btn.btn-outline-primary(type="submit") 확인

@@ -6,15 +6,16 @@ block content
     h1.main-title= event.title
 
     .event.show
-      include _event
+      include _event-detailform
 
-      .buttons
-        button.btn.btn-primary #[i.fa.fa-thumbs-up] Like
+      .buttons#button-container
         if currentUser && event.author.id == currentUser.id
           | 
-          a.btn.btn-outline-secondary(href=`/events/${event.id}/edit`) 수정
+          a.btn.btn-outline-secondary#update-button(href=`/events/${event.id}/edit`) 수정
           | 
-          a.btn.btn-outline-danger.need-confirm-btn(href=`/events/${event.id}?_method=delete`) 제거
+          a.btn.btn-outline-danger.need-confirm-btn#delete-button(href=`/events/${event.id}?_method=delete`) 제거
+        else
+          button.btn.btn-primary#like-button #[i.fa.fa-thumbs-up] Like
       
     if event.numAnswers > 0
       hr

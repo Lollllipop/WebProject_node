@@ -6,7 +6,7 @@ body {
   color : #373737;
   font-weight: 400;
   font-size: 15px;
-  /*background: #fafafa;*/
+  background: #F8F8FA;
 }
 section:first-of-type{
   display: none;
@@ -278,6 +278,21 @@ body>#flash-message{
 /************************* events ***************************/
 #total_set{
   text-align: right;
+  margin-top: 30px;
+}
+
+#event-list-box{
+  margin-bottom: 15px;
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
+}
+
+
+/************************* events/@ ***************************/
+#event-container{
+  background-color: #FFFFFF;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+  border-radius: 5px 5px 5px 5px;
 }
 #charge-container{
   width: 100%;
@@ -285,13 +300,68 @@ body>#flash-message{
   border-top: 1px solid #D2D6DF;
   border-bottom: 1px solid #D2D6DF; 
   margin-top: 10px;
+  text-align: right;
+  line-height: 55px;
 }
 #charge-box{
-
+  display: inline-block;
+  width: max-content;
+  vertical-align: middle;
+  font-weight: 700;
 }
 #apply-box{
-  
+  vertical-align: middle;
+  display: inline-block;
 }
+#apply-btn{
+  width: 100px;
+}
+#right-box{
+  width: 100%;
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #666a73; 
+  border-bottom: 1px solid #D2D6DF;
+} 
+#date-box{
+  width: 90%;
+  font-weight: 300;
+}
+#date-title, #location-title, #orgName-title, #orgDescription-title, #content-title{
+  color: #282C35;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+#location-title, #orgName-title, #orgDescription-title{
+  margin-top: 33px;
+}
+#content-box{
+  padding-top: 20px;  
+  padding-bottom: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #666a73;
+  border-bottom: 1px solid #D2D6DF;
+}
+#location-box{
+  width: 90%;
+}
+#like-button{
+  width: 80px;
+}
+#update-button, #delete-button{
+  width: 80px;
+}
+#button-container{
+  text-align: center;
+}
+
+
+
+
 
 
 

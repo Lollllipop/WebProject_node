@@ -1,3 +1,4 @@
+.tags.badges
 .row
   .col-sm
     .numbers.
@@ -10,9 +11,3 @@
       if event.author
         | 
         | by #[a(href=`/users/${event.author.id}`)= event.author.name] 
-#charge-container
-  #charge-box= event.isFree === false ? event.charge+"원" : "free"
-  #apply-box
-.content= event.content
-.tags.badges
-

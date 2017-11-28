@@ -19,11 +19,12 @@ header
             li.nav-item
               a.nav-link(href=`/users/${currentUser._id}`) 프로필 보기
             li.nav-item
-              a.nav-link(href=`/users/${currentUser._id}/edit`) 프로필 관리
+              a.nav-link(href=`/users/${currentUser._id}/edit`) 프로필 관리 
             li.nav-item
               a.nav-link(href='/events/my_favorite') 관심있는 이벤트
             li.nav-item
-              a.nav-link(href='/events/my_write') 내가 작성한 이벤트
+              //- 왜 currentUser._id 정보를 같이 넘겨줘야 되는 건지?
+              a.nav-link(href=`/events/my_write/${currentUser._id}`) 내가 작성한 이벤트
             li.nav-item
               a.nav-link(href='/events/my_apply') 내가 신청한 이벤트
             li.nav-item

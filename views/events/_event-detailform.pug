@@ -1,0 +1,39 @@
+.row
+  .col-sm
+    .numbers.
+      #[span.number.num-votes= event.numLikes] likes,
+      #[span.number.num-answers= event.numAnswers] answers,
+      #[span.number.num-views= event.numReads] reads
+  .col-sm
+    .author
+      | asked on #{moment(event.createdAt).format('YYYY-MM-DD')}
+      if event.author
+        | 
+        | by #[a(href=`/users/${event.author.id}`)= event.author.name] 
+#charge-container
+  #charge-box= event.isFree === false ? event.charge+"원" : "free"
+  #apply-box
+    button.btn.btn-primary#apply-btn 신청하기
+#right-box
+  #date-title 시간
+  #date-box
+    = event.startTime.toISOString().substring(0,10) + ' ' + event.startTime.toISOString().substring(11,16)+ " ~ "
+    = event.endTime.toISOString().substring(0,10) + ' ' + event.endTime.toISOString().substring(11,16)
+  #location-title 장소
+  #location-box= event.location
+  #orgName-title 진행 조직
+  #orgName-box= event.orgName
+  #orgDescription-title 조직 설명
+  #orgDescription-box= event.orgDescription
+#content-box
+  #content-title 이벤트 내용
+  = event.content
+#kinds-box
+  each kind in event.kinds
+    |#
+    = kind+" "
+  each field in event.fields
+    |#
+    = field+" "
+
+

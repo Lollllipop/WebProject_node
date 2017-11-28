@@ -1,0 +1,67 @@
+.form-group
+  label(for="title") 제목
+  input.form-control(type="text", name="title", value=event.title ? event.title : '', required)
+.form-group
+  label(for="content") 세부 내용
+  textarea.form-control(name="content", rows="5", required)= event.content ? event.content : ''
+.form-group
+  label(for="location") 장소
+  input.form-control(type="text", name="location", value=event.location ? event.location : '', required)
+  //- 여기 다음 맵 들어가야 함
+.form-group
+  .form-group-2
+    label(for="startDate") 시작 날짜
+    input.form-control(type="date", name="startDate", value=event.startTime ? event.startTime.toISOString().substring(0,10) : '', required)
+  .form-group-2
+    label(for="endDate") 종료 날짜
+    input.form-control(type="date", name="endDate", value=event.endTime ? event.endTime.toISOString().substring(0,10) : '',required)
+.form-group 
+  .form-group-2
+    label(for="startTime") 시작 시간
+    input.form-control(type="time", name="startTime", value=event.startTime ? event.startTime.toISOString().substring(11,16) : '',required)
+  .form-group-2    
+    label(for="endTime") 종료 시간
+    input.form-control(type="time", name="endTime", value=event.endTime ? event.endTime.toISOString().substring(11,16) : '',required)
+.form-group
+  label(for="orgName") 조직 이름
+  input.form-control(type="text", name="orgName", value=event.orgName ? event.orgName : '', required)
+.form-group
+  label(for="orgDescription") 조직 설명
+  textarea.form-control(name="orgDescription", rows="3", required)= event.orgDescription ? event.orgDescription : ''
+.form-group
+  .form-group-2#form-group-kinds
+    label(for="kinds") 종류
+    select#select-kinds(name='kinds', size='3', required)
+      option(value='coun') 국가
+      option(value='pub_en') 공기업
+      option(value='big_en') 대기업
+      option(value='mid_en') 중견기업
+      option(value='sml_en') 중소기업
+      option(value='indi') 개인
+      script.
+        var event = !{JSON.stringify(event)};
+        $("#select-kinds option[value="+event.kinds[0]+"]").prop('selected', true);
+  .form-group-2#form-group-kinds
+    label(for="fields") 분야
+    select#select-fields(name='fields', size='3', multiple, required)
+      option(value='bigdata') 빅데이터 
+      option(value='security') 보안
+      option(value='ai') 인공지능
+      option(value='robot') 로봇
+      option(value='car') 자동차
+      option(value='game') 게임
+      option(value='bio') 바이오테크
+      option(value='itSolution') IT 솔루션
+      option(value='itService') IT 서비스
+      script.
+        for (var field of event.fields){
+          $("#select-fields option[value="+field+"]").prop('selected', true);
+        }
+.form-group
+  label(for="isFree") 유료
+  input.form-control#isFree(type="checkbox", name="isFree", value="false") 
+  input.form-control#charge(type="number", name="charge" placeholder="가격을 입력하세요", value=event.charge ? event.charge : '',)
+  script.
+    if (event.isFree === false) {
+      $("#isFree").prop('checked', true);    
+    }
