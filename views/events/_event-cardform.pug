@@ -1,13 +1,15 @@
-.tags.badges
-.row
-  .col-sm
-    .numbers.
-      #[span.number.num-votes= event.numLikes] likes,
-      #[span.number.num-answers= event.numAnswers] answers,
-      #[span.number.num-views= event.numReads] reads
-  .col-sm
-    .author
-      | asked on #{moment(event.createdAt).format('YYYY-MM-DD')}
-      if event.author
-        | 
-        | by #[a(href=`/users/${event.author.id}`)= event.author.name] 
+.card
+  img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
+  a.card-img-link(href=`/events/${event.id}`)
+  .card-body
+    p.card-body-text= event.title
+    p.card-body-location= event.location
+    p.card-body-date #{moment(event.createdAt).format('YYYY-MM-DD')}에 등록
+  #card-footer.card-body
+    if event.kinds
+        |#
+        = event.kinds + " "
+    if event.fields
+        each field in event.fields
+          |#
+          = field + " "

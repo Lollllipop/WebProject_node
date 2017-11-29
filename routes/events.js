@@ -55,7 +55,7 @@ router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
 
 router.get('/my_write/:id', needAuth, catchErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = 10; 
+  const limit = 8; 
   var query = {author: req.user.id}; // 원하는 쿼리를 여기다 주면 그 쿼리에 해당된 데이터만 넘어감.
 
   var events = await Event.paginate(query, {
@@ -64,7 +64,9 @@ router.get('/my_write/:id', needAuth, catchErrors(async (req, res, next) => {
     limit: limit // limit 정보 전달
   });
 
-  res.render('events/my_write', {events: events, query: req.query}); // 현 사용자의 이벤트 다 넘김
+  console.log(events);
+  
+  res.render('events/my_write', {events: events, query: req.query, user:req.user}); // 현 사용자의 이벤트 다 넘김
 }));
 
 

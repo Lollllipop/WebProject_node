@@ -3,7 +3,7 @@ extends ../layout
 include ../includes/_paginate
 
 block content
-  .container#events-container
+  .container#my_write-container
     form.form-inline.search-input-group(action='/events', method='GET')
       i.fa.fa-search
       input.form-control.mr-sm-2(type='text', name='term', placeholder='검색', aria-label='Search', value=term)
@@ -11,17 +11,18 @@ block content
     h1.main-title 내 이벤트 목록
     if events.total > 0
       .small#total_set Total #{events.total} event(s)
+
     if events.total <= 0 
       .alert.alert-info No events available yet
     else
       .events
         //- each in문 => pug에서 지원하는 문법이며 event에는 events라는 배열의 값들이 하나씩 들어감 (배열에 사용되는 것 주로)
-        each event in events 
+        each event in events.docs
           #event-list-box
-            a.title(href=`/events/${event.id}`)= event.title
             include _event-cardform
 
-      +paginate(events, '/events', query)
+      +paginate(events, `/events/my_write/${user.id}`, query)
 
     hr
-    a.btn.btn-primary(href='/events/new') 이벤트 만들기
+    #create-event-button  
+      a.btn.btn-primary(href='/events/new') 이벤트 만들기

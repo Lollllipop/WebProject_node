@@ -360,9 +360,42 @@ body>#flash-message{
 }
 
 
+/************************* events/my_wirte ***************************/
+#event-list-box .card>.card-img-link{
+  height: 50%;
+  width: 100%;
+  position: absolute;
+  z-index: 1000;
+}
+#event-list-box .card>.card-body{
+  padding-top: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+#event-list-box .card>.card-body>.card-body-text{
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#event-list-box .card>.card-body>.card-body-location{
+  color: #959597;
+  font-size: 13px;
+  margin-top: 13px;
+}
+#event-list-box .card>.card-body>.card-body-date{
+  color: #959597;
+  font-size: 13px;
+  margin-top: 7px;
+}
 
-
-
+#my_write-container #card-footer{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 
 
@@ -454,7 +487,34 @@ body>#flash-message{
   #event-container{
     max-width: 800px!important;
   }
-}
+  #my_write-container{
+    margin: auto!important;
+    max-width: 96%!important;
+  }
+  #my_write-container .main-title{
+    padding-bottom: 30px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #D2D6DF;
+  }
+  #my_write-container #total_set{
+    margin-bottom: 20px;
+    margin-top: 3px;
+  }
+  #my_write-container #event-list-box{
+    width: 23%;
+    margin-right: 6px;
+    display: inline-block;
+  }
+  #my_write-container>.events{
+    text-align: center;
+  }
+  #my_write-container .btn{
+    width: 200px;
+  }
+  #my_write-container #create-event-button{
+    text-align: center;
+  }
+
 
 @media screen and (min-width : 1025px) {
   .grid-content{
