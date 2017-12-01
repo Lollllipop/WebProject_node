@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const User = require('../models/user');
+const Event = require('../models/event');
 const catchErrors = require('../lib/async-error');
 
 /**
@@ -8,9 +9,11 @@ const catchErrors = require('../lib/async-error');
  * 메인 홈페이지만 보여줌
  */
  
-router.get('/', function(req, res, next) {
-  res.render('index');
-});
+router.get('/', catchErrors(async (req, res, next) => {
+  var getEventNumber = 9;
+  var events = await Event.find().sort({createdAt: -1}).limit(getEventNumber); // limit : find할 개수 선택
+  res.render('index', {events: events});
+}));
 
 /**
  * 관리자 페이지 라우트

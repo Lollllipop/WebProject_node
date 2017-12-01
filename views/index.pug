@@ -23,46 +23,8 @@ block content
               input.form-control(type="text", placeholder="이벤트 검색")
     .title 가장 최신 이벤트
     .grid-content
-      .card
-        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
-        a.card-img-link(href="/events/@")
-        .card-body
-          p.card-body-date 얼마 전에 등록됨
-          p.card-body-text 제목
-          p.card-body-location 위치
-        #card-footer.card-body
-          a.card-link(href="#") #tag1
-          a.card-link(href="#") #tag2
-      .card
-        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
-        a.card-img-link(href="/events/@")
-        .card-body
-          p.card-body-date 얼마 전에 등록됨
-          p.card-body-text 제목
-          p.card-body-location 위치
-        #card-footer.card-body
-          a.card-link(href="#") #tag1
-          a.card-link(href="#") #tag2
-      .card
-        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
-        a.card-img-link(href="/events/@")
-        .card-body
-          p.card-body-date 얼마 전에 등록됨
-          p.card-body-text 제목
-          p.card-body-location 위치
-        #card-footer.card-body
-          a.card-link(href="#") #tag1
-          a.card-link(href="#") #tag2
-      .card
-        img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
-        a.card-img-link(href="/events/@")
-        .card-body
-          p.card-body-date 얼마 전에 등록됨
-          p.card-body-text 제목
-          p.card-body-location 위치
-        #card-footer.card-body
-          a.card-link(href="#") #tag1
-          a.card-link(href="#") #tag2
+      each event in events
+        include ./events/_event-cardform
     .grid-seeMore
       a.btn.btn-primary(href="/events" role="button" aria-pressed="true") SEE MORE
 

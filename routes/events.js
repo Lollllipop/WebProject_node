@@ -2,6 +2,7 @@ const express = require('express');
 const Event = require('../models/event');
 const Answer = require('../models/answer'); 
 const User = require('../models/user'); 
+const Apply = require('../models/apply');
 const catchErrors = require('../lib/async-error');
 const needAuth = require('../lib/auth-check');
 const validateForm = require('../lib/validateForm-event');
@@ -34,22 +35,18 @@ router.get('/new', needAuth, (req, res, next) => {
 });
 
 router.get('/:id', catchErrors(async (req, res, next) => {
+  const user = req.user;
+  const applies = await Apply.find({event: req.params.id})
   const event = await Event.findById(req.params.id).populate('author');
-  console.log("event: ",event);
   const answers = await Answer.find({event: event.id}).populate('author');
-  console.log("answers: ",answers);
   event.numReads++;   
-
    // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록??? 만들어야 함
-  
   await event.save();
-  res.render('events/detail', {event: event, answers: answers});
+  res.render('events/detail', {event: event, answers: answers, user: user, applies: applies});
 }));
 
 router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
   const event = await Event.findById(req.params.id);
-  console.log('event :', event);
-  console.log('event :', event.kinds[0]);
   res.render('events/edit', {event: event});
 }));
 
@@ -60,13 +57,49 @@ router.get('/my_write/:id', needAuth, catchErrors(async (req, res, next) => {
 
   var events = await Event.paginate(query, {
     sort: {createdAt: -1}, // 이걸로 정렬하겠다.
-    page: page, // page 정보와
-    limit: limit // limit 정보 전달
+    page: page, 
+    limit: limit 
   });
-
-  console.log(events);
   
   res.render('events/my_write', {events: events, query: req.query, user:req.user}); // 현 사용자의 이벤트 다 넘김
+}));
+
+router.get('/my_apply/:id', needAuth, catchErrors(async (req, res, next) => {
+  const apply = await Apply.find({author: req.user.id});
+  const page = parseInt(req.query.page) || 1;
+  const limit = 8;
+  var apply_event=[]; 
+  for(var i in apply){
+    apply_event.push(apply[i].event); 
+  }
+
+  var query = {'_id':{$in:apply_event}};
+  var events = await Event.paginate(query, {
+    sort: {createdAt: -1}, // 이걸로 정렬하겠다.
+    page: page, 
+    limit: limit 
+  });
+
+  res.render('events/my_apply', {events: events, query: req.query, user:req.user});
+}));
+
+router.get('/:id/applierList', needAuth, catchErrors(async (req, res, next) => {
+  const apply = await Apply.find({event: req.params.id}); 
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10; // listform 느낌으로 갈 것이니 10개로
+  var apply_applier=[]; 
+  for(var i in apply){
+    apply_applier.push(apply[i].applier); 
+  }
+
+  var query = {'_id':{$in:apply_applier}};
+  var users = await User.paginate(query, {
+    sort: {createdAt: -1}, // 이걸로 정렬하겠다.
+    page: page, 
+    limit: limit 
+  });
+  console.log("users!!!!!! : ",users);
+  res.render('events/applierList', {users: users, event: req.params.id});
 }));
 
 
@@ -106,7 +139,21 @@ router.post('/', needAuth, catchErrors(async (req, res, next) => {
   res.redirect('/events'); // 이거 핵심임 새로 다시 업데이트 된 디비 내용을 refresh해서 게시하게 하도록 함
 }));
 
+router.post('/:id/my_apply', catchErrors(async (req, res, next) => {
+  var event = await Event.findById(req.params.id);
+  // 여기에 좀 문제가 있는듯?
+  var apply = new Apply({
+    applier: req.user.id,
+    event: event.id
+  });
+  await apply.save();
 
+  event.numApplis++;
+  await event.save();
+
+  req.flash('success', '이벤트 신청이 성공적으로 완료되었습니다.');
+  res.redirect(`/events/${event.id}`);
+}));
 
 /**
  * PUT route (update)

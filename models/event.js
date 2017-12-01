@@ -25,6 +25,7 @@ var schema = new Schema({
   toJSON: { virtuals: true},
   toObject: {virtuals: true}
 });
+
 schema.plugin(mongoosePaginate);
 var Event = mongoose.model('Event', schema);
 

@@ -85,11 +85,35 @@ footer{
   margin-bottom: 13px;
 }
 .grid-content .card .card-img-link{
-  height: 50%;
+  height: 60%;
   width: 100%;
   position: absolute;
   z-index: 1000;
 }
+.grid-content #card-footer, .grid-content .card-body-text{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.grid-content .card>.card-body>.card-body-location{
+  color: #959597;
+  font-size: 13px;
+  margin-top: 13px;
+}
+.grid-content .card>.card-body>.card-body-date{
+  color: #959597;
+  font-size: 13px;
+  margin-top: 7px;
+}
+.grid-content .card>.card-body{
+  padding-top: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+
 
 
 
@@ -398,6 +422,26 @@ body>#flash-message{
 }
 
 
+/************************* events/my_apply ***************************/
+#applierList-btn{
+  width: 180px; 
+}
+
+
+/************************* events/appliserList ***************************/
+#section-top{
+  display: block!important;
+}
+#section-top .applier-title{
+  text-align: center;
+  margin-top: 20px;
+  font-size: 20px;
+}
+#section-top #total_set{
+  width: 97%;
+  margin: auto;
+  margin-top: 20px;
+}
 
 @media screen and (min-width : 768px) {
   section:first-of-type{
@@ -514,7 +558,14 @@ body>#flash-message{
   #my_write-container #create-event-button{
     text-align: center;
   }
-
+  .grid-content .card:last-of-type{
+    display: none;
+  }
+  #section-top, #section-applier-list{
+    width: 550px;
+    margin: auto;
+  }
+}
 
 @media screen and (min-width : 1025px) {
   .grid-content{
@@ -531,6 +582,12 @@ body>#flash-message{
   }
   #section-list{
     width: 82%;
+  }
+  .grid-content .card .card-img-link{
+    height: 53%;
+  }
+  .grid-content .card:last-of-type{
+    display: inline-flex;
   }
 }
 

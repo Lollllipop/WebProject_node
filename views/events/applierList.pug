@@ -1,0 +1,27 @@
+extends ../layout
+
+include ../includes/_paginate
+
+block content
+  section#section-top
+    .applier-title 지원자 관리
+    if users.total > 0
+      .small#total_set 총 #{users.total} 명
+
+    if users.total <= 0 
+      .alert.alert-info 0 명
+  section#section-applier-list
+    .list-box
+      table.table.table-hover
+        thead
+          tr
+            th Name
+            th Email
+        tbody
+          each user in users.docs
+            tr
+              td
+                a(href=`/users/${user._id}`)= user.name
+              td= user.email
+    .pagination-container
+      +paginate(users, `/events/${event.id}/applierList`, query)
