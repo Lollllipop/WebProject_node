@@ -83,12 +83,15 @@ footer{
 }
 .grid-content .card{
   margin-bottom: 13px;
+  display: inline-block;
 }
 .grid-content .card .card-img-link{
   height: 60%;
   width: 100%;
   position: absolute;
   z-index: 1000;
+  top: 0px;
+  left: 0px;
 }
 .grid-content #card-footer, .grid-content .card-body-text{
   overflow: hidden;
@@ -313,6 +316,18 @@ body>#flash-message{
 
 
 /************************* events/@ ***************************/
+#leaveUser-notification{
+    width: 100%;
+    margin: auto;
+    height: 50px;
+    margin-top: 20px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    font-weight: 700;
+    color: red;
+
+}
 #event-container{
   background-color: #FFFFFF;
   box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
@@ -483,9 +498,10 @@ body>#flash-message{
   }
   .grid-content .card{
     width: 49%;
-    display: inline-flex;
+    display: inline-block;
   }
   #search-layer-bottom .form-row{
+    margin: auto; 
     width: 400px;
   }
   .container form{
@@ -575,7 +591,7 @@ body>#flash-message{
   }
   .grid-content .card{
     width: 32%;
-    display: inline-flex;
+    display: inline-block;
   }
   #search-layer-bottom .form-row{
     width: 500px;
@@ -584,10 +600,12 @@ body>#flash-message{
     width: 82%;
   }
   .grid-content .card .card-img-link{
-    height: 53%;
+    height: 57%;
+    top: 0px;
+    left: 0px;
   }
   .grid-content .card:last-of-type{
-    display: inline-flex;
+    display: inline-block;
   }
 }
 

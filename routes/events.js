@@ -36,6 +36,7 @@ router.get('/new', needAuth, (req, res, next) => {
 
 router.get('/:id', catchErrors(async (req, res, next) => {
   const user = req.user;
+  console.log(user);
   const applies = await Apply.find({event: req.params.id})
   const event = await Event.findById(req.params.id).populate('author');
   const answers = await Answer.find({event: event.id}).populate('author');
@@ -64,15 +65,20 @@ router.get('/my_write/:id', needAuth, catchErrors(async (req, res, next) => {
   res.render('events/my_write', {events: events, query: req.query, user:req.user}); // 현 사용자의 이벤트 다 넘김
 }));
 
+
+
+
+
 router.get('/my_apply/:id', needAuth, catchErrors(async (req, res, next) => {
-  const apply = await Apply.find({author: req.user.id});
+  const apply = await Apply.find({applier: req.user.id});
+  console.log("applier!! : ",apply);//@@@@@@@@@@@
   const page = parseInt(req.query.page) || 1;
   const limit = 8;
   var apply_event=[]; 
   for(var i in apply){
     apply_event.push(apply[i].event); 
   }
-
+  console.log("applyEvent!! : ",apply_event);//@@@@@@@@@@@
   var query = {'_id':{$in:apply_event}};
   var events = await Event.paginate(query, {
     sort: {createdAt: -1}, // 이걸로 정렬하겠다.
@@ -82,6 +88,11 @@ router.get('/my_apply/:id', needAuth, catchErrors(async (req, res, next) => {
 
   res.render('events/my_apply', {events: events, query: req.query, user:req.user});
 }));
+
+
+
+
+
 
 router.get('/:id/applierList', needAuth, catchErrors(async (req, res, next) => {
   const apply = await Apply.find({event: req.params.id}); 
@@ -120,6 +131,10 @@ router.post('/', needAuth, catchErrors(async (req, res, next) => {
   var etArray = req.body.endTime.split(':').map(Number);
   const start_time = new Date(sdArray[0], sdArray[1], sdArray[2], stArray[0], stArray[1]);
   const end_time = new Date(edArray[0], edArray[1], edArray[2], etArray[0], etArray[1]);
+  var charge = 0;
+  if(req.body.charge){
+    var charge = Number(req.body.charge);
+  }
   var event = new Event({
     author: user._id, // 여기서 저자와 연결이 되네
     title: req.body.title,
@@ -132,14 +147,14 @@ router.post('/', needAuth, catchErrors(async (req, res, next) => {
     kinds:req.body.kinds,
     fields:req.body.fields,
     isFree:!(req.body.isFree==="false"),
-    charge:Number(req.body.charge),
+    charge:charge
   });
   await event.save();
   req.flash('success', '이벤트 등록이 성공적으로 완료되었습니다.');
   res.redirect('/events'); // 이거 핵심임 새로 다시 업데이트 된 디비 내용을 refresh해서 게시하게 하도록 함
 }));
 
-router.post('/:id/my_apply', catchErrors(async (req, res, next) => {
+router.post('/:id/my_apply', needAuth, catchErrors(async (req, res, next) => {
   var event = await Event.findById(req.params.id);
   // 여기에 좀 문제가 있는듯?
   var apply = new Apply({
@@ -195,8 +210,9 @@ module.exports = router;
  */
 
  router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
+  await Apply.find({event: req.params.id}).remove(); // 관련 신청 내역 삭제
   await Event.findOneAndRemove({_id: req.params.id});
   
   req.flash('success', '삭제가 완료되었습니다.');
-  res.redirect('/events'); // 내 이벤트 목록으로 이동하면 더 좋을 듯
+  res.redirect(`/events/my_write/${req.params.id}`); // 내 이벤트 목록으로 이동하면 더 좋을 듯
 }));

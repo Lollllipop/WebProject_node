@@ -53,7 +53,11 @@
 .form-group
   label(for="isFree") 유료
   input.form-control#isFree(type="checkbox", name="isFree", value="false") 
-  input.form-control#charge(type="number", name="charge" placeholder="가격을 입력하세요")
+  input.form-control#charge(type="number", name="charge", placeholder="가격을 입력하세요", disabled)
+  script.
+    $('#isFree').click(function(){
+      $('#charge').prop('disabled', (i, v) => !v);
+    });
 
 
 

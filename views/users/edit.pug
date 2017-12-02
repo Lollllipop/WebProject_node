@@ -10,13 +10,14 @@ block content
       .form-group
         label(for='email') 이메일
         input.form-control(type='email', id='email', name='email', placeholder='이메일을 입력해주세요', value=user.email)
-      .form-group
-        label(for='current_password') 현재 비밀번호
-        input.form-control(type='password', id='current_password', name='current_password', placeholder='현재 비밀번호를 입력해주세요')
-      .form-group
-        label(for='password') 새 비밀번호
-        input.form-control(type='password', id='password', name='password', placeholder='새 비밀번호를 입력해주세요')
-      .form-group
-        label(for='password_confirmation') 비밀번호 확인
-        input.form-control(type='password', id='password_confirmation', name='password_confirmation', placeholder='새 비밀번호를 다시 한번 입력해주세요')
+      if !currentUser.isManager
+        .form-group
+          label(for='current_password') 현재 비밀번호
+          input.form-control(type='password', id='current_password', name='current_password', placeholder='현재 비밀번호를 입력해주세요')
+        .form-group
+          label(for='password') 새 비밀번호
+          input.form-control(type='password', id='password', name='password', placeholder='새 비밀번호를 입력해주세요')
+        .form-group
+          label(for='password_confirmation') 비밀번호 확인
+          input.form-control(type='password', id='password_confirmation', name='password_confirmation', placeholder='새 비밀번호를 다시 한번 입력해주세요')
       button.btn.btn-primary(type='submit') 수정

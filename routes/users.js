@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/user');
+const Apply = require('../models/apply');
 const router = express.Router();
 const catchErrors = require('../lib/async-error');
 const validateForm = require('../lib/validateForm-user');
@@ -72,31 +73,47 @@ router.post('/', catchErrors(async (req, res, next) => {
  */
 
 router.put('/:id', needAuth, catchErrors(async (req, res, next) => { // 수정 버튼 클릭시 동작
-
   const user = await User.findById({_id: req.params.id}); // 현재 사용자 식별 및 DB에서 데이터 추출
   if (!user) {
     req.flash('danger', 'Not exist user.');
     return res.redirect('back');
   }
-
-  var checkCurrenUser=true; 
-  if (!await user.validatePassword(req.body.current_password)) {
-    checkCurrenUser=false;
+  if (!req.user.isManager) {
+    var checkCurrenUser=true; 
+    if (!await user.validatePassword(req.body.current_password)) {
+      checkCurrenUser=false;
+    }
   }
+  var err="";
+  if(req.user.isManager){
+    var name = req.body.name || "";
+    var email = req.body.email || "";
+    name = name.trim();
+    email = email.trim();
+    err = (() => {
+      if (!name) {
+        return 'Name is required.';
+      }
 
-  const err = validateForm(req.body ,{needPassword: true, updateUser: true, checkCurrenUser: checkCurrenUser});
+      if (!email) {
+        return 'Email is required.';
+      }
+      return null;
+    })();
+  }else{
+    err = validateForm(req.body ,{needPassword: true, updateUser: true, checkCurrenUser: checkCurrenUser});
+  }
+  console.log("!!err!! : ", err);
   if (err) { // 수정시에도 정보 적는 양식은 지켜줘야 하므로 check
-    console.log("!!err!! : ", err);
     req.flash('danger', err);
     return res.redirect('back');
   }
 
   user.name = req.body.name;
   user.email = req.body.email;
-  if (req.body.password) {
+  if (!req.user.isManager) {
     user.password = await user.generateHash(req.body.password);
   }
-  console.log();
   await user.save();
   if(req.user.isManager){
     req.flash('success', '회원 수정 처리가 정상적으로 처리되었습니다.');
@@ -112,11 +129,13 @@ router.put('/:id', needAuth, catchErrors(async (req, res, next) => { // 수정 �
  */
 
 router.delete('/:id', needAuth, catchErrors(async (req, res, next) => { // 여기에 needAuth와 async 미들웨어가 있는 것임
-  const user = await User.findById({_id: req.params.id}); // 그냥 해당 document를 다 날려버림 => 나중에 문제 될수도.. 올린 글 관련하여
-  user.email = `__Deleted-${user._id}@no-email.com`; // 이메일 property가 필수라 delete 더미 값으로 설정
+  const user = await User.findById({_id: req.params.id});  
+  user.name = '탈퇴 회원';
+  user.email = `__Deleted-${user._id}@no-email.com`; // 더미 값으로 설정
   user.password = undefined;
   user.facebook = undefined; // 주의 불확실함
   user.kakao = undefined; // 주의 불확실함
+  await Apply.find({applier: user.id}).remove(); // 관련 신청 내역 삭제
   await user.save();
   if(req.user.isManager){
     req.flash('success', '회원 탈퇴 처리가 정상적으로 처리되었습니다.');
