@@ -6,7 +6,15 @@ block content
     #leaveUser-notification 탈퇴한 회원의 이벤트입니다.
   .container#event-container
     h1.main-title= event.title
-
+    #apply-count
+      if applyNum == event.maxNum
+        |인원이 다 찼습니다.
+        script.
+          $('#apply-count').css('color', 'red');
+      else
+        = applyNum + "명"
+        |/
+        = event.maxNum + "명"
     .event.show
       include _event-detailform
 

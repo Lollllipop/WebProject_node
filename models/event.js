@@ -15,6 +15,7 @@ var schema = new Schema({
   fields: [String],
   isFree: Boolean,
   charge: {type: Number},
+  maxNum: {type: Number},
   numLikes: {type: Number, default: 0},
   numAnswers: {type: Number, default: 0},
   numApplis: {type: Number, default: 0},

@@ -84,6 +84,8 @@ footer{
 .grid-content .card{
   margin-bottom: 13px;
   display: inline-block;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 .grid-content .card .card-img-link{
   height: 60%;
@@ -298,9 +300,18 @@ body>#flash-message{
 }
 #charge{
   display: inline-block;
-  width: 85%;
+  width: 80%;
 }
-
+#maxNum{
+  width: 74%;
+  display: inline-block;
+}
+#form-group-isFree, #form-group-maxNum{
+  width: 100%;
+}
+#form-group-maxNum{
+  margin-top: 15px;
+}
 
 /************************* events ***************************/
 #total_set{
@@ -397,14 +408,27 @@ body>#flash-message{
 #button-container{
   text-align: center;
 }
+#apply-count{
+  text-align: center;
+  margin-bottom: 30px;
+  color: #666a73;
+}
+.main-title{
+  margin-bottom: 2px;
+}
 
 
 /************************* events/my_wirte ***************************/
+#event-list-box .card{
+  display: block;
+}
 #event-list-box .card>.card-img-link{
   height: 50%;
   width: 100%;
   position: absolute;
   z-index: 1000;
+  top: 0px;
+  left: 0px;
 }
 #event-list-box .card>.card-body{
   padding-top: 5px;
@@ -497,7 +521,7 @@ body>#flash-message{
     text-align: center;
   }
   .grid-content .card{
-    width: 49%;
+    width: 47%;
     display: inline-block;
   }
   #search-layer-bottom .form-row{
@@ -581,6 +605,16 @@ body>#flash-message{
     width: 550px;
     margin: auto;
   }
+  #charge{
+    width: 75%;
+  }
+  #maxNum{
+    width: 69%;
+  }
+  #form-group-isFree, #form-group-maxNum{
+     width: 49%;
+     display: inline-block;
+  }
 }
 
 @media screen and (min-width : 1025px) {
@@ -590,7 +624,7 @@ body>#flash-message{
     text-align: center;
   }
   .grid-content .card{
-    width: 32%;
+    width: 31%;
     display: inline-block;
   }
   #search-layer-bottom .form-row{

@@ -58,13 +58,17 @@
           $("#select-fields option[value="+field+"]").prop('selected', true);
         }
 .form-group
-  label(for="isFree") 유료
-  input.form-control#isFree(type="checkbox", name="isFree", value="false") 
-  input.form-control#charge(type="number", name="charge" placeholder="가격을 입력하세요", value=event.charge ? event.charge : '', disabled)
-  script.
-    if (event.isFree === false) {
-      $("#isFree").prop('checked', true);    
-    }
-    $('#isFree').click(function(){
-      $('#charge').prop('disabled', (i, v) => !v);
-    });
+  .form-group-2#form-group-isFree
+    label(for="isFree") 유료
+    input.form-control#isFree(type="checkbox", name="isFree", value="false") 
+    input.form-control#charge(type="number", name="charge" placeholder="가격을 입력하세요", value=event.charge ? event.charge : '', disabled)
+    script.
+      if (event.isFree === false) {
+        $("#isFree").prop('checked', true);    
+      }
+      $('#isFree').click(function(){
+        $('#charge').prop('disabled', (i, v) => !v);
+      });
+  .form-group-2#form-group-maxNum
+    label(for="maxNum") 최대 인원
+    input.form-control#maxNum(type="number", name="maxNum", required, value=event.maxNum ? event.maxNum : '')

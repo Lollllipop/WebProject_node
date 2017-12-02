@@ -36,14 +36,15 @@ router.get('/new', needAuth, (req, res, next) => {
 
 router.get('/:id', catchErrors(async (req, res, next) => {
   const user = req.user;
-  console.log(user);
   const applies = await Apply.find({event: req.params.id})
   const event = await Event.findById(req.params.id).populate('author');
   const answers = await Answer.find({event: event.id}).populate('author');
+  const applyNum = applies.length;
+  console.log(applyNum);
   event.numReads++;   
    // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록??? 만들어야 함
   await event.save();
-  res.render('events/detail', {event: event, answers: answers, user: user, applies: applies});
+  res.render('events/detail', {event: event, answers: answers, user: user, applies: applies, applyNum: applyNum});
 }));
 
 router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
@@ -133,8 +134,9 @@ router.post('/', needAuth, catchErrors(async (req, res, next) => {
   const end_time = new Date(edArray[0], edArray[1], edArray[2], etArray[0], etArray[1]);
   var charge = 0;
   if(req.body.charge){
-    var charge = Number(req.body.charge);
+    charge = Number(req.body.charge);
   }
+  console.log("charge!!:",charge);
   var event = new Event({
     author: user._id, // 여기서 저자와 연결이 되네
     title: req.body.title,
@@ -147,11 +149,12 @@ router.post('/', needAuth, catchErrors(async (req, res, next) => {
     kinds:req.body.kinds,
     fields:req.body.fields,
     isFree:!(req.body.isFree==="false"),
-    charge:charge
+    charge:charge,
+    maxNum:Number(req.body.maxNum)
   });
   await event.save();
   req.flash('success', '이벤트 등록이 성공적으로 완료되었습니다.');
-  res.redirect('/events'); // 이거 핵심임 새로 다시 업데이트 된 디비 내용을 refresh해서 게시하게 하도록 함
+  res.redirect(`/events/${event.id}`); // 이거 핵심임 새로 다시 업데이트 된 디비 내용을 refresh해서 게시하게 하도록 함
 }));
 
 router.post('/:id/my_apply', needAuth, catchErrors(async (req, res, next) => {
@@ -183,6 +186,10 @@ router.put('/:id', catchErrors(async (req, res, next) => {
   var etArray = req.body.endTime.split(':').map(Number);
   const start_time = new Date(sdArray[0], sdArray[1], sdArray[2], stArray[0], stArray[1]);
   const end_time = new Date(edArray[0], edArray[1], edArray[2], etArray[0], etArray[1]);
+  var charge = 0;
+  if(req.body.charge){
+    charge = Number(req.body.charge);
+  }
 
   event.title = req.body.title;
   event.content = req.body.content;
@@ -194,7 +201,8 @@ router.put('/:id', catchErrors(async (req, res, next) => {
   event.kinds = req.body.kinds;
   event.fields = req.body.fields;
   event.isFree = !(req.body.isFree==="false");
-  event.charge = Number(req.body.charge);
+  event.charge = charge;
+  event.maxNum = Number(req.body.maxNum);
 
   await event.save();
 

@@ -15,9 +15,13 @@
   #apply-box
     if  user===undefined || user.id != event.author.id
       a.btn.btn-primary#apply-btn(href=`/events/${event.id}/my_apply?_method=post`) 신청하기
+      if applyNum == event.maxNum
+        script.
+          $('#apply-btn').text("인원마감");
+          $('#apply-btn').click(function(e) { e.preventDefault(); });
       if user
         each apply in applies
-          if user.id == apply.author
+          if user.id == apply.applier
             script.
               $('#apply-btn').text("신청완료");
               $('#apply-btn').click(function(e) { e.preventDefault(); });
