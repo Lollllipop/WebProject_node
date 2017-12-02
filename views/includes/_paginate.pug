@@ -12,7 +12,7 @@ mixin paginate(docs, link, params)
       var url = `${link}?page=`;
     }
 
-  if docs.pages > 1
+  if docs.pages > 1 
     - start = Math.max(docs.page - 5, 1);
     - end = Math.min(docs.page + 5, docs.pages);
     nav(aria-label="page navigation")

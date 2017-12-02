@@ -16,11 +16,11 @@ block content
         a.nav-link(href="/events/new") 새로운 이벤트를 등록해주세요!
       #search-layer-bottom
         //- get events
-        form(action="/events/eventStep1")
+        form(action="/events", method='GET')
           .form-row
             input.btn.btn-primary(type="submit" value="검색")
             .form-row-1
-              input.form-control(type="text", placeholder="이벤트 검색")
+              input.form-control(type="text", name="searchKey",placeholder="이벤트 검색")
     .title 가장 최신 이벤트
     .grid-content
       each event in events

@@ -6,22 +6,38 @@ block content
   .container#events-container
     form.form-inline.search-input-group(action='/events', method='GET')
       i.fa.fa-search
-      input.form-control.mr-sm-2(type='text', name='term', placeholder='검색', aria-label='Search', value=term)
+      input.form-control.mr-sm-2(type='text', name='searchKey', placeholder='검색', aria-label='Search', value=searchKey)
+        //- get 방식이면 무조건 querystring으로 name과 value 를 넘기므로!!
+    #events-container_    
+      #events-search
+        .dropdown.show
+          a#dropdownMenuLink.btn.btn-secondary.dropdown-toggle(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+            | 분야
+          .dropdown-menu#dropdownMenu-fields(aria-labelledby="dropdownMenuLink")
+            a.dropdown-item(href="/events?field=bigdata") 빅데이터
+            a.dropdown-item(href="/events?field=security") 보안
+            a.dropdown-item(href="/events?field=ai") 인공지능
+            a.dropdown-item(href="/events?field=robot") 로봇
+            a.dropdown-item(href="/events?field=car") 자동차
+            a.dropdown-item(href="/events?field=game") 게임
+            a.dropdown-item(href="/events?field=bio") 바이오테크
+            a.dropdown-item(href="/events?field=itSolution") IT 솔루션
+            a.dropdown-item(href="/events?field=itService") IT 서비스
+      #events-content
+        h1.main-title 이벤트 목록
+        if events.total > 0
+          .small#total_set Total #{events.total} event(s)
 
-    h1.main-title 이벤트 목록
-    if events.total > 0
-      .small#total_set Total #{events.total} event(s)
+        if events.total <= 0 
+          .alert.alert-info No events available yet
+        else
+          .events
+            each event in events.docs
+              #event-list-box
+                a.title(href=`/events/${event.id}`)= event.title
+                include _event-listform
 
-    if events.total <= 0 
-      .alert.alert-info No events available yet
-    else
-      .events
-        each event in events.docs
-          #event-list-box
-            a.title(href=`/events/${event.id}`)= event.title
-            include _event-listform
+          +paginate(events, '/events', query)
 
-      +paginate(events, '/events', query)
-
-    hr
-    a.btn.btn-primary(href='/events/new') 이벤트 만들기
+        hr
+        a.btn.btn-primary(href='/events/new') 이벤트 만들기

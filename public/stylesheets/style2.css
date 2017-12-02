@@ -324,7 +324,17 @@ body>#flash-message{
   background-color: #FFFFFF;
   box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
 }
-
+#dropdownMenuLink{
+  background-color: #F8F8FA;
+  border-color: #F8F8FA;
+  border-bottom: 1px solid #666a73;
+  border-radius: 0px;
+  color: #666a73;
+}
+#dropdownMenu-fields{
+  width: 100%;
+  border-radius: 0px;
+}
 
 /************************* events/@ ***************************/
 #leaveUser-notification{
@@ -640,6 +650,25 @@ body>#flash-message{
   }
   .grid-content .card:last-of-type{
     display: inline-block;
+  }
+  #events-container_{
+    text-align: center;
+  }
+  #events-container{
+    max-width: 800px!important;
+  }
+  #events-content, #events-search{
+    display: inline-block;
+  }
+  #events-search{
+    vertical-align: top;
+    width: 170px;
+    margin-top: 28px;
+  }
+  #dropdownMenuLink{
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 0 0 rgba(0,0,0,.1);
+    border-bottom: none;
   }
 }
 

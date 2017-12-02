@@ -19,6 +19,20 @@ router.get('/', catchErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 10; 
   var query = {};
+  const searchKey = req.query.searchKey;
+  const field = req.query.field;
+
+  if (searchKey) { // 검색창에 검색어를 입력해서 조건이 존재하면 query에 그 조건을 넣는 것
+    query = {$or: [ // 배열의 조건중 하나라도 맞으면 검색 되도록
+      {title: {'$regex': searchKey, '$options': 'i'}}, // title 값에 term이 포함되면 pick!
+      {location: {'$regex': searchKey, '$options': 'i'}} // i는 대소문자를 무시하겠다라는 뜻
+    ]};
+  }
+
+  if (field) { 
+    query = {fields: {'$regex': field, '$options': 'i'}};
+  }
+  console.log("query!!:", query);
 
   const events = await Event.paginate(query, {
     sort: {createdAt: -1}, // 이걸로 정렬하겠다.
@@ -27,7 +41,7 @@ router.get('/', catchErrors(async (req, res, next) => {
     limit: limit // limit 정보 전달
   });
 
-  res.render('events/index', {events: events, query: req.query});
+  res.render('events/index', {events: events, searchKey: searchKey, query: req.query});
 }));
 
 router.get('/new', needAuth, (req, res, next) => {
