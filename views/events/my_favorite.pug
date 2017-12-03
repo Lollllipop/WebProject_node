@@ -8,7 +8,7 @@ block content
       i.fa.fa-search
       input.form-control.mr-sm-2(type='text', name='term', placeholder='검색', aria-label='Search', value=term)
 
-    h1.main-title 내가 신청한 이벤트
+    h1.main-title 관심있는 이벤트
     if events.total > 0
       .small#total_set Total #{events.total} event(s)
 
@@ -21,6 +21,6 @@ block content
           #event-list-box
             include _event-cardform
 
-      +paginate(events, `/events/my_apply/${user.id}`, query)
+      +paginate(events, `/events/my_favorite/${user.id}`, query)
 
     hr

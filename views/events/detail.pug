@@ -25,8 +25,17 @@ block content
           | 
           a.btn.btn-outline-danger.need-confirm-btn#delete-button(href=`/events/${event.id}?_method=delete`) 제거
         else
-          button.btn.btn-primary#like-button #[i.fa.fa-thumbs-up] Like
-      
+          script.
+            var event_ = !{JSON.stringify(event)};
+          a.btn.btn-primary#like-button(href="javascript:void(0)") #[i.fa.fa-thumbs-up]
+          if isLiker
+            script.
+              $("#like-button").addClass('disabled_');
+              $("#like-button").css('width', '150px');
+              $(".fa-thumbs-up").text(" 좋아요 완료");
+          if !currentUser
+            script.
+              $("#like-button").addClass('disabled_'); 
     if event.numAnswers > 0
       hr
       h3 #{event.numAnswers} Answer(s)

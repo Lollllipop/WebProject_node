@@ -18,9 +18,11 @@ block content
         //- get events
         form(action="/events", method='GET')
           .form-row
-            input.btn.btn-primary(type="submit" value="검색")
+            input.btn.btn-primary(type="submit", value="검색")
             .form-row-1
-              input.form-control(type="text", name="searchKey",placeholder="이벤트 검색")
+              input.form-control(type="text", name="searchKey",placeholder="이벤트 검색", id="search-bar", autocomplete="off")
+              i.fa.fa-spin.fa-spinner
+              ul.suggest-box
     .title 가장 최신 이벤트
     .grid-content
       each event in events

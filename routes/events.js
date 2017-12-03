@@ -3,6 +3,7 @@ const Event = require('../models/event');
 const Answer = require('../models/answer'); 
 const User = require('../models/user'); 
 const Apply = require('../models/apply');
+const Like = require('../models/like');
 const catchErrors = require('../lib/async-error');
 const needAuth = require('../lib/auth-check');
 const validateForm = require('../lib/validateForm-event');
@@ -50,15 +51,25 @@ router.get('/new', needAuth, (req, res, next) => {
 
 router.get('/:id', catchErrors(async (req, res, next) => {
   const user = req.user;
-  const applies = await Apply.find({event: req.params.id})
+  var isLiker = null;
+  if(user){
+    isLiker = await Like.find({$and: [
+      {event: req.params.id}, 
+      {liker: user.id}
+    ]});
+    if(!isLiker.length>0){
+      isLiker = null;
+    }
+  }
+  const applies = await Apply.find({event: req.params.id});
   const event = await Event.findById(req.params.id).populate('author');
   const answers = await Answer.find({event: event.id}).populate('author');
   const applyNum = applies.length;
-  console.log(applyNum);
   event.numReads++;   
    // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록??? 만들어야 함
   await event.save();
-  res.render('events/detail', {event: event, answers: answers, user: user, applies: applies, applyNum: applyNum});
+  console.log("isLiker!! : ", isLiker);
+  res.render('events/detail', {event: event, answers: answers, user: user, applies: applies, applyNum: applyNum, isLiker: isLiker});
 }));
 
 router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
@@ -80,20 +91,14 @@ router.get('/my_write/:id', needAuth, catchErrors(async (req, res, next) => {
   res.render('events/my_write', {events: events, query: req.query, user:req.user}); // 현 사용자의 이벤트 다 넘김
 }));
 
-
-
-
-
 router.get('/my_apply/:id', needAuth, catchErrors(async (req, res, next) => {
   const apply = await Apply.find({applier: req.user.id});
-  console.log("applier!! : ",apply);//@@@@@@@@@@@
   const page = parseInt(req.query.page) || 1;
   const limit = 8;
   var apply_event=[]; 
   for(var i in apply){
     apply_event.push(apply[i].event); 
   }
-  console.log("applyEvent!! : ",apply_event);//@@@@@@@@@@@
   var query = {'_id':{$in:apply_event}};
   var events = await Event.paginate(query, {
     sort: {createdAt: -1}, // 이걸로 정렬하겠다.
@@ -103,11 +108,6 @@ router.get('/my_apply/:id', needAuth, catchErrors(async (req, res, next) => {
 
   res.render('events/my_apply', {events: events, query: req.query, user:req.user});
 }));
-
-
-
-
-
 
 router.get('/:id/applierList', needAuth, catchErrors(async (req, res, next) => {
   const apply = await Apply.find({event: req.params.id}); 
@@ -124,11 +124,28 @@ router.get('/:id/applierList', needAuth, catchErrors(async (req, res, next) => {
     page: page, 
     limit: limit 
   });
-  console.log("users!!!!!! : ",users);
   res.render('events/applierList', {users: users, event: req.params.id});
 }));
 
+router.get('/my_favorite/:id', needAuth, catchErrors(async (req, res, next) => {
+  const like = await Like.find({liker: req.user.id});
+  console.log("applier!! : ",like);//@@@@@@@@@@@
+  const page = parseInt(req.query.page) || 1;
+  const limit = 8;
+  var like_event=[]; 
+  for(var i in like){
+    like_event.push(like[i].event); 
+  }
+  console.log("applyEvent!! : ",like_event);//@@@@@@@@@@@
+  var query = {'_id':{$in:like_event}};
+  var events = await Event.paginate(query, {
+    sort: {createdAt: -1}, // 이걸로 정렬하겠다.
+    page: page, 
+    limit: limit 
+  });
 
+  res.render('events/my_favorite', {events: events, query: req.query, user:req.user});
+}));
 
 
 
@@ -185,6 +202,23 @@ router.post('/:id/my_apply', needAuth, catchErrors(async (req, res, next) => {
 
   req.flash('success', '이벤트 신청이 성공적으로 완료되었습니다.');
   res.redirect(`/events/${event.id}`);
+}));
+
+router.post('/:id/like', needAuth, catchErrors(async (req, res, next) => {
+  var event = await Event.findById(req.params.id);
+  var user = req.user;
+  var like = new Like({
+    liker: user.id,
+    event: event.id
+  });
+
+  await like.save();
+
+  event.numLikes++;
+
+  await event.save();
+
+  return res.json(event.numLikes);
 }));
 
 /**
