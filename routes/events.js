@@ -1,4 +1,7 @@
 const express = require('express');
+const multer = require('multer');
+const fs = require('fs-extra');
+const path = require('path');
 const Event = require('../models/event');
 const Answer = require('../models/answer'); 
 const User = require('../models/user'); 
@@ -10,7 +13,18 @@ const validateForm = require('../lib/validateForm-event');
 
 const router = express.Router();
 
+// const minetypes = { // 내가 받을 타입의 조건을 포함하는 객체 생성
+//   "image/jpeg": "jpg",
+//   "image/gif": "gif",
+//   "image/png": "png"
+// }
 
+// const upload = multer({
+//   dest:'tmp',
+//   fileFilter:(req, file, cb) => {
+
+//   }
+// });
 
 /**
  * GET route (read)

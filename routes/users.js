@@ -16,7 +16,7 @@ router.get('/new', (req, res, next) => {
   res.render('users/new', {messages: req.flash()});
 });
 
-router.get('/:id', catchErrors(async (req, res, next) => {
+router.get('/:id', needAuth, catchErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
   res.render('users/show', {user: user});
 }));

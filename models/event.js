@@ -6,6 +6,7 @@ var schema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User' }, // author 자체가 해당 user의 ID를 받는 듯
   title: {type: String, trim: true, required: true},
   content: {type: String, trim: true, required: true},
+  img: [String], // 이미지 여러개를 저장하므로 배열 저장 경로를 저장
   location: {type: String, required: true},
   startTime: {type: Date, required: true},
   endTime: {type: Date, required: true},

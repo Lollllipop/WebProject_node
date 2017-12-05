@@ -33,9 +33,13 @@ block content
         else
           .events
             each event in events.docs
-              #event-list-box
-                a.title(href=`/events/${event.id}`)= event.title
-                include _event-listform
+              #event-box_
+                #event-img-box
+                  img.card-img-top(src="/images/temporary_image2.png", alt="Card image cap")
+                  a.card-img-link(href=`/events/${event.id}`)
+                #event-list-box
+                  a.title(href=`/events/${event.id}`)= event.title
+                  include _event-listform
 
           +paginate(events, '/events', query)
 

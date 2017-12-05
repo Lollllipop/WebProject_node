@@ -18,7 +18,8 @@ block content
           img.img-fluid.rounded-circle(src= user.facebook.photo)
 
     hr
-    p#users-data
-      a.btn.btn-outline-primary(href=`/users/${user._id}/edit`) 수정
-      | 
-      a.btn.btn-outline-danger.need-confirm-btn(href=`/users/${user._id}?_method=DELETE`) 회원 탈퇴
+    if currentUser.id === user.id  
+      p#users-data
+        a.btn.btn-outline-primary(href=`/users/${user._id}/edit`) 수정
+        | 
+        a.btn.btn-outline-danger.need-confirm-btn(href=`/users/${user._id}?_method=DELETE`) 회원 탈퇴
