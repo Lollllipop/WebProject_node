@@ -4,42 +4,47 @@
 .form-group
   label(for="content") 세부 내용
   textarea.form-control(name="content", rows="5", required)
-.form-group
-  label(for="img") 이미지
-  input#file.form-control(type="file")
-  input#url.form-control(type="text", readonly="readonly", name="img", value="")
-    //- 올린 파일의 이름 보여주는 창
-  img#preview.img-fluid(src="https://dummyimage.com/200x200/ccc/fff")
-    //- 그냥 더미 이미지 긁어온 것
-  script.
-    $(function() {
-      $("#url").hide();
-      $("#preview").hide();
-      $("#file").change(function() { // 파일 입력시
-        var file = $("#file")[0].files[0];
-        if (file) {
-          var url = "/s3?filename=" + encodeURIComponent(file.name) + 
-                    "&type=" + encodeURIComponent(file.type);
-          console.log("--url-- :",url);
-          $.getJSON(url, function(resp) { // pre-signed url을 받기 위한 ajax 콜
-            console.log("--pre-sigend url-- :",resp.signedRequest); // pre-signed url
-            $.ajax({
-              url: resp.signedRequest,
-              method: 'PUT',
-              data: file,
-              headers: {'x-amz-acl': 'public-read', 'Content-Type': file.type},
-              processData: false, 
-              contentType: file.type,
-              success: function() {
-                $("#url").show();
-                $("#preview").attr("src", resp.url).show();
-                $("#url").val(resp.url);
-              }
-            });
-          });
-        }
-      });
-    });
+//- .form-group
+//-   label(for="img") 이미지
+//-   input#file.form-control(type="file")
+//-   input#url.form-control(type="text", readonly="readonly", name="img", value="")
+//-     //- 올린 파일의 이름 보여주는 창
+//-   img#preview.img-fluid(src="https://dummyimage.com/200x200/ccc/fff")
+//-     //- 그냥 더미 이미지 긁어온 것
+//-   script.
+//-     $(function() {
+//-       $("#url").hide();
+//-       $("#preview").hide();
+//-       $("#file").change(function() { // 파일 입력시
+//-         var file = $("#file")[0].files[0];
+//-         if (file) {
+//-           console.log("--file-- :",file);
+//-           var url = "/s3?filename=" + encodeURIComponent(file.name) + 
+//-                     "&type=" + encodeURIComponent(file.type);
+//-           console.log("--url-- :",url);
+//-           $.getJSON(url, function(resp) { // pre-signed url을 받기 위한 ajax 콜
+//-             console.log("--pre-sigend url-- :",resp.signedRequest); // pre-signed url
+//-             $.ajax({
+//-               url: resp.signedRequest,
+//-               method: 'PUT',
+//-               data: file,
+//-               headers: {'x-amz-acl': 'public-read', 'Content-Type': file.type},
+//-               processData: false, 
+//-               contentType: file.type,
+//-               error: function(error){
+//-                 console.log("error 발생")
+//-                 console.log(error)
+//-               },
+//-               success: function() {
+//-                 $("#url").show();
+//-                 $("#preview").attr("src", resp.url).show();
+//-                 $("#url").val(resp.url);
+//-               }
+//-             });
+//-           });
+//-         }
+//-       });
+//-     });
 .form-group
   label(for="location") 장소
   //- #map
