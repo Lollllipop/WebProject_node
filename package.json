@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "async-error-catcher": "^1.0.1",
+    "aws-sdk": "^2.166.0",
     "bcrypt": "^1.0.3",
     "body-parser": "~1.18.2",
     "connect-flash": "^0.1.1",

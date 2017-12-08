@@ -1,4 +1,7 @@
 var express = require('express');
+const aws = require('aws-sdk');
+const S3_BUCKET = process.env.S3_BUCKET;
+console.log(process.env.AWS_ACCESS_KEY_ID, process.env.AWS_SECRET_ACCESS_KEY);
 var router = express.Router();
 const User = require('../models/user');
 const Event = require('../models/event');
@@ -62,5 +65,34 @@ router.get('/suggestEvents', catchErrors(async (req, res, next) => {
   return res.json(arr);// JSON으로 결과를 return
   //render 나 send가 없으니 return을 해줘야 하나봄
 }));
+
+/**
+ * S3 접근 ajax 라우트
+ * S3 서버의 signed url을 처리하기 위한
+ */
+
+router.get('/s3', function(req, res, next) {
+  const s3 = new aws.S3({region: 'ap-northeast-2'});
+  const filename = req.query.filename;
+  const type = req.query.type;
+  const params = {
+    Bucket: S3_BUCKET,
+    Key: filename,
+    Expires: 900,
+    ContentType: type,
+    ACL: 'public-read'
+  };
+  s3.getSignedUrl('putObject', params, function(err, data) {
+    if (err) {
+      console.log(err);
+      return res.json({err: err});
+    }
+    // pre-signed url을 s3 서버로부터 정상적으로 받았을 시 클라이언트에게 전달!
+    res.json({
+      signedRequest: data,
+      url: `https://${S3_BUCKET}.s3.amazonaws.com/${filename}` // 이 곳에 파일이 저장됨
+    });
+  });
+});
 
 module.exports = router;

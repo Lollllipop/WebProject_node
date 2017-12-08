@@ -245,7 +245,7 @@ td .btn-sm{
 
 
 /*********************** flashMessages *************************/
-body>#flash-message{
+#flash-message{
   position: fixed;
   bottom: 1px;
   left: 50%;
