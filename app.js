@@ -54,6 +54,7 @@ if (app.get('env') === 'development') { // 이쁜 형태로 보내기 위해서
 
 /**
  * Pug의 local에 moment라이브러리와 querystring 라이브러리를 사용할 수 있도록.
+ * local 이란 이름이지만 효과는 전역적인 효과를 내는듯 하다.
  */
 
 app.locals.moment = require('moment');
@@ -106,13 +107,6 @@ app.use(session({
 //  store: new mongoStore({url:MONGODB_CONN_URI, collection: 'sessions'}) // 디스크에 위치한 DB에 세션 정보를 저장하니까 엄청 느려지네 ;;
 }));
 app.use(flash()); // flash message를 사용할 수 있도록
-
-/**
- * passport 초기화
- * passport가 다루는 html 태그의 name은 정해져 있으므로 passport가 사용하는 name으로
- * 적합하게 form 등을 짜줘야 한다.
- * name은 passport 홈페이지 참고
- */
 
 app.use(express.static(path.join(__dirname, 'public'))); // 정적파일 라우팅
 
